@@ -1,549 +1,1029 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description"
-        content="Inscripción rápida a eventos universitarios de la Pontificia Universidad Católica del Ecuador (PUCE), Quito.">
-    <title>Inscripción rápida a eventos | PUCE</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Inscripción rápida a eventos universitarios de la Pontificia Universidad Católica del Ecuador (PUCE), Quito."
+    />
+    <meta name="theme-color" content="#14284b" />
+    <title>Inscripción a eventos | PUCE</title>
 
     <style>
-        /* ==========================================================
-       1. VARIABLES (tokens de diseño): cambia aquí colores y fuentes
-       ========================================================== */
-        :root {
-            --azul: #14284b;
-            /* color principal */
-            --azul-claro: #e8edf7;
-            /* fondos suaves */
-            --dorado: #e0a100;
-            /* acento para acciones */
-            --dorado-osc: #b98000;
-            --papel: #f7f8fb;
-            /* fondo de página */
-            --texto: #1c2333;
-            --texto-suave: #4d566b;
-            --borde: #c9d0df;
-            --error: #b3261e;
-            --radio: 6px;
-            --fuente-titulo: Georgia, "Times New Roman", serif;
-            --fuente-texto: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      /* ==========================================================
+           1. VARIABLES Y TOKENS DE DISEÑO
+        ========================================================== */
+      :root {
+        --azul: #14284b;
+        --azul-profundo: #0d1b35;
+        --azul-medio: #203d6b;
+        --azul-claro: #edf2fa;
+        --dorado: #e3ad35;
+        --dorado-osc: #c58b13;
+        --papel: #f6f8fc;
+        --blanco: #ffffff;
+        --texto: #202a3b;
+        --texto-suave: #647087;
+        --borde: #dce2ec;
+        --error: #b3261e;
+        --exito: #24734d;
+        --radio: 14px;
+        --radio-grande: 22px;
+        --sombra: 0 12px 32px rgba(20, 40, 75, 0.08);
+        --fuente-titulo: Georgia, "Times New Roman", serif;
+        --fuente-texto:
+          system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+
+      /* ==========================================================
+           2. RESET Y ESTILOS GENERALES
+        ========================================================== */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 1rem;
+      }
+
+      body {
+        margin: 0;
+        color: var(--texto);
+        background: var(--papel);
+        font-family: var(--fuente-texto);
+        font-size: 1rem;
+        line-height: 1.65;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: var(--fuente-titulo);
+        line-height: 1.2;
+      }
+
+      p {
+        max-width: 68ch;
+      }
+
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      :focus-visible {
+        outline: 3px solid var(--dorado);
+        outline-offset: 4px;
+      }
+
+      .contenedor {
+        width: min(100% - 2.5rem, 72rem);
+        margin-inline: auto;
+      }
+
+      .saltar {
+        position: absolute;
+        z-index: 20;
+        top: -5rem;
+        left: 1rem;
+        padding: 0.7rem 1rem;
+        color: var(--azul);
+        background: var(--dorado);
+        border-radius: 8px;
+        font-weight: 700;
+      }
+
+      .saltar:focus {
+        top: 1rem;
+      }
+
+      .etiqueta {
+        display: inline-block;
+        margin-bottom: 0.8rem;
+        color: var(--dorado-osc);
+        font-size: 0.76rem;
+        font-weight: 800;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      .titulo-seccion {
+        margin-bottom: 0.55rem;
+        color: var(--azul);
+        font-size: clamp(1.8rem, 3vw, 2.35rem);
+      }
+
+      .texto-intro {
+        margin-bottom: 0;
+        color: var(--texto-suave);
+      }
+
+      /* ==========================================================
+           3. ENCABEZADO Y NAVEGACIÓN
+        ========================================================== */
+      .encabezado {
+        position: relative;
+        z-index: 2;
+        color: var(--blanco);
+        background: var(--azul-profundo);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .encabezado .contenedor {
+        display: flex;
+        min-height: 78px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+      }
+
+      .marca {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--blanco);
+        font-family: var(--fuente-titulo);
+        font-size: 1.25rem;
+        font-weight: 700;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .marca__sello {
+        display: grid;
+        width: 40px;
+        height: 40px;
+        place-items: center;
+        color: var(--azul-profundo);
+        background: var(--dorado);
+        border-radius: 50%;
+        font-family: var(--fuente-texto);
+        font-size: 0.8rem;
+        font-weight: 900;
+        letter-spacing: -0.04em;
+      }
+
+      .menu {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .menu a {
+        display: inline-block;
+        padding: 0.55rem 0.85rem;
+        color: #e1e8f4;
+        border-radius: 8px;
+        font-size: 0.94rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition:
+          color 0.2s ease,
+          background-color 0.2s ease;
+      }
+
+      .menu a:hover {
+        color: var(--blanco);
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* ==========================================================
+           4. HERO / PRESENTACIÓN PRINCIPAL
+        ========================================================== */
+      .hero {
+        position: relative;
+        overflow: hidden;
+        padding-block: clamp(4rem, 8vw, 7rem);
+        color: var(--blanco);
+        text-align: center;
+        background:
+          radial-gradient(
+            circle at 15% 20%,
+            rgba(227, 173, 53, 0.16),
+            transparent 25rem
+          ),
+          linear-gradient(
+            135deg,
+            var(--azul-profundo),
+            var(--azul) 58%,
+            var(--azul-medio)
+          );
+      }
+
+      .hero::after {
+        position: absolute;
+        right: -7rem;
+        bottom: -13rem;
+        width: 28rem;
+        height: 28rem;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 50%;
+        content: "";
+        pointer-events: none;
+      }
+
+      .hero .contenedor {
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero .etiqueta {
+        color: #f3cc72;
+      }
+
+      .hero h1 {
+        max-width: 17ch;
+        margin: 0 auto 1.1rem;
+        font-size: clamp(2.35rem, 6vw, 4.35rem);
+        letter-spacing: -0.035em;
+      }
+
+      .hero p {
+        max-width: 58ch;
+        margin: 0 auto 2rem;
+        color: #d7dfed;
+        font-size: clamp(1rem, 2vw, 1.15rem);
+      }
+
+      .hero__nota {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.65rem 1.5rem;
+        margin-top: 1.5rem;
+        color: #d7dfed;
+        font-size: 0.88rem;
+      }
+
+      .hero__nota span::before {
+        margin-right: 0.45rem;
+        color: var(--dorado);
+        content: "✓";
+        font-weight: 900;
+      }
+
+      /* ==========================================================
+           5. BOTONES
+        ========================================================== */
+      .boton {
+        display: inline-flex;
+        min-height: 48px;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.8rem 1.35rem;
+        color: var(--azul-profundo);
+        background: var(--dorado);
+        border: 2px solid var(--dorado);
+        border-radius: 9px;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 800;
+        text-align: center;
+        text-decoration: none;
+        transition:
+          transform 0.2s ease,
+          background-color 0.2s ease,
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .boton:hover {
+        transform: translateY(-2px);
+        background: #f0c45f;
+        border-color: #f0c45f;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+      }
+
+      .boton--secundario {
+        color: var(--azul);
+        background: transparent;
+        border-color: var(--borde);
+      }
+
+      .boton--secundario:hover {
+        color: var(--azul);
+        background: var(--azul-claro);
+        border-color: var(--azul-claro);
+      }
+
+      /* ==========================================================
+           6. SECCIÓN DE EVENTOS
+        ========================================================== */
+      .seccion {
+        padding-block: clamp(3.5rem, 7vw, 5.5rem);
+      }
+
+      .seccion__cabecera {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 1rem 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .seccion__cabecera p {
+        margin-bottom: 0;
+      }
+
+      .eventos {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.25rem;
+      }
+
+      .evento {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        padding: 1.5rem;
+        background: var(--blanco);
+        border: 1px solid var(--borde);
+        border-radius: var(--radio);
+        box-shadow: 0 5px 18px rgba(20, 40, 75, 0.04);
+        transition:
+          transform 0.22s ease,
+          box-shadow 0.22s ease,
+          border-color 0.22s ease;
+      }
+
+      .evento:hover {
+        transform: translateY(-5px);
+        border-color: #bdc9dc;
+        box-shadow: var(--sombra);
+      }
+
+      .evento__fecha {
+        display: inline-flex;
+        width: fit-content;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.25rem;
+        padding: 0.55rem 0.9rem;
+        color: var(--azul);
+        background: var(--azul-claro);
+        border-radius: 10px;
+        line-height: 1.15;
+      }
+
+      .evento__dia {
+        font-size: 1.55rem;
+        font-weight: 850;
+      }
+
+      .evento__mes {
+        margin-top: 0.2rem;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+      }
+
+      .evento h3 {
+        min-height: 2.7em;
+        margin-bottom: 1rem;
+        color: var(--azul);
+        font-size: 1.35rem;
+      }
+
+      .evento__datos {
+        display: grid;
+        gap: 0.75rem;
+        margin: 0 0 1.5rem;
+        color: var(--texto-suave);
+        font-size: 0.92rem;
+      }
+
+      .evento__dato {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.65rem;
+      }
+
+      .evento__icono {
+        flex: 0 0 1.4rem;
+        color: var(--dorado-osc);
+        font-weight: 900;
+        text-align: center;
+      }
+
+      .evento__datos dt {
+        color: var(--texto);
+        font-weight: 750;
+      }
+
+      .evento__datos dd {
+        margin: 0;
+      }
+
+      .evento .boton {
+        width: 100%;
+        margin-top: auto;
+      }
+
+      /* ==========================================================
+           7. SECCIÓN Y FORMULARIO DE INSCRIPCIÓN
+        ========================================================== */
+      .seccion--suave {
+        background: var(--azul-claro);
+      }
+
+      .inscripcion__cabecera {
+        max-width: 45rem;
+        margin: 0 auto 2rem;
+        text-align: center;
+      }
+
+      .formulario {
+        width: min(100%, 43rem);
+        margin-inline: auto;
+        padding: clamp(1.25rem, 4vw, 2.5rem);
+        background: var(--blanco);
+        border: 1px solid rgba(20, 40, 75, 0.08);
+        border-radius: var(--radio-grande);
+        box-shadow: var(--sombra);
+      }
+
+      .formulario__intro {
+        margin-bottom: 1.75rem;
+        padding-bottom: 1.25rem;
+        border-bottom: 1px solid var(--borde);
+      }
+
+      .formulario__intro strong {
+        display: block;
+        margin-bottom: 0.25rem;
+        color: var(--azul);
+        font-family: var(--fuente-titulo);
+        font-size: 1.3rem;
+      }
+
+      .formulario__intro p {
+        margin-bottom: 0;
+        color: var(--texto-suave);
+        font-size: 0.9rem;
+      }
+
+      fieldset {
+        min-width: 0;
+        margin: 0 0 1.6rem;
+        padding: 0;
+        border: 0;
+      }
+
+      legend {
+        width: 100%;
+        margin-bottom: 1.1rem;
+        padding: 0 0 0.65rem;
+        color: var(--azul);
+        border-bottom: 1px solid var(--borde);
+        font-family: var(--fuente-titulo);
+        font-size: 1.25rem;
+        font-weight: 700;
+      }
+
+      .campo {
+        margin-bottom: 1.15rem;
+      }
+
+      .campo label {
+        display: block;
+        margin-bottom: 0.4rem;
+        color: var(--texto);
+        font-size: 0.93rem;
+        font-weight: 750;
+      }
+
+      .campo small {
+        display: block;
+        margin-top: 0.35rem;
+        color: var(--texto-suave);
+        font-size: 0.82rem;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      select {
+        width: 100%;
+        min-height: 49px;
+        padding: 0.7rem 0.85rem;
+        color: var(--texto);
+        background: #fbfcfe;
+        border: 1px solid #cbd4e1;
+        border-radius: 9px;
+        font: inherit;
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease,
+          background-color 0.2s ease;
+      }
+
+      input::placeholder {
+        color: #929bad;
+      }
+
+      input:hover,
+      select:hover {
+        border-color: #9baac0;
+      }
+
+      input:focus,
+      select:focus {
+        outline: none;
+        background: var(--blanco);
+        border-color: var(--azul-medio);
+        box-shadow: 0 0 0 3px rgba(32, 61, 107, 0.12);
+      }
+
+      input:user-invalid,
+      select:user-invalid {
+        border-color: var(--error);
+      }
+
+      .casilla {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        margin: 0.25rem 0 1.5rem;
+        padding: 1rem;
+        background: #f7f9fc;
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+      }
+
+      .casilla input {
+        width: 1.15rem;
+        height: 1.15rem;
+        flex: 0 0 auto;
+        margin: 0.2rem 0 0;
+        accent-color: var(--azul);
+      }
+
+      .casilla label {
+        color: var(--texto-suave);
+        font-size: 0.88rem;
+      }
+
+      .formulario__nota {
+        margin: 0.85rem 0 0;
+        color: var(--texto-suave);
+        font-size: 0.78rem;
+        text-align: center;
+      }
+
+      .formulario .boton {
+        width: 100%;
+      }
+
+      /* ==========================================================
+           8. PIE DE PÁGINA
+        ========================================================== */
+      .pie {
+        padding-block: 2.5rem 1.5rem;
+        color: #d7dfed;
+        background: var(--azul-profundo);
+        text-align: center;
+      }
+
+      .pie__nombre {
+        margin-bottom: 0.35rem;
+        color: var(--blanco);
+        font-family: var(--fuente-titulo);
+        font-size: 1.2rem;
+      }
+
+      .pie address {
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+        font-style: normal;
+      }
+
+      .pie address p {
+        margin: 0 auto 0.25rem;
+      }
+
+      .pie__legal {
+        margin: 0 auto;
+        padding-top: 1.2rem;
+        color: #aebbd0;
+        border-top: 1px solid rgba(255, 255, 255, 0.13);
+        font-size: 0.8rem;
+      }
+
+      /* ==========================================================
+           9. DISEÑO RESPONSIVE
+        ========================================================== */
+      @media (max-width: 850px) {
+        .eventos {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
-        /* ==========================================================
-       2. RESET Y BASE
-       ========================================================== */
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
+        .evento:last-child {
+          grid-column: 1 / -1;
         }
 
-        html {
-            scroll-behavior: smooth;
+        .evento:last-child h3 {
+          min-height: 0;
         }
+      }
 
-        body {
-            margin: 0;
-            font-family: var(--fuente-texto);
-            font-size: 1rem;
-            line-height: 1.6;
-            color: var(--texto);
-            background: var(--papel);
-        }
-
-        h1,
-        h2,
-        h3 {
-            font-family: var(--fuente-titulo);
-            line-height: 1.2;
-            margin: 0 0 .5em;
-        }
-
-        p {
-            margin: 0 0 1em;
-            max-width: 65ch;
-        }
-
-        ul {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            font-weight: bold;
-        }
-
-        a {
-            color: inherit;
-        }
-
-        /* Foco visible para quienes navegan con teclado */
-        :focus-visible {
-            outline: 3px solid var(--dorado);
-            outline-offset: 2px;
-        }
-
-        /* Contenedor reutilizable que centra y limita el ancho */
+      @media (max-width: 600px) {
         .contenedor {
-            width: min(100% - 2rem, 70rem);
-            margin-inline: auto;
-        }
-
-        /* Enlace "saltar al contenido" (accesibilidad) */
-        .saltar {
-            position: absolute;
-            left: 1rem;
-            top: -4rem;
-            background: var(--dorado);
-            color: var(--azul);
-            padding: .5rem 1rem;
-            border-radius: var(--radio);
-            z-index: 10;
-        }
-
-        .saltar:focus {
-            top: 1rem;
-        }
-
-        /* ==========================================================
-       3. ENCABEZADO Y NAVEGACIÓN
-       ========================================================== */
-        .encabezado {
-            background: var(--azul);
-            color: #fff;
+          width: min(100% - 1.5rem, 72rem);
         }
 
         .encabezado .contenedor {
-            width: 100%;
-            /* sin límite de ancho: llega a los bordes */
-            padding: 1rem;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: .5rem 2rem;
-        }
-
-        .marca {
-            font-family: var(--fuente-titulo);
-            font-size: 1.25rem;
-            font-weight: 700;
-            text-decoration: none;
+          min-height: auto;
+          flex-direction: column;
+          justify-content: center;
+          gap: 0.75rem;
+          padding-block: 1rem;
         }
 
         .menu {
-            display: flex;
-            gap: 1.5rem;
+          justify-content: center;
+          gap: 0.2rem;
         }
 
         .menu a {
-            text-decoration: none;
-            padding-block: .25rem;
-            border-bottom: 2px solid transparent;
+          padding: 0.45rem 0.6rem;
+          font-size: 0.86rem;
         }
 
-        .menu a:hover {
-            border-bottom-color: var(--dorado);
-        }
-
-        /* ==========================================================
-       4. HERO (primera pantalla)
-       ========================================================== */
         .hero {
-            background: var(--azul);
-            color: #fff;
-            padding-block: 3rem 4rem;
-            text-align: center;
+          padding-block: 3.5rem;
         }
 
         .hero h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            max-width: 28ch;
-            margin-inline: auto;
+          font-size: clamp(2.15rem, 10vw, 3rem);
         }
 
-        .hero p {
-            color: #d5dcec;
-            font-size: 1.125rem;
-            margin-inline: auto;
+        .seccion__cabecera {
+          align-items: flex-start;
+          flex-direction: column;
+          margin-bottom: 1.5rem;
         }
 
-        /* Botón (se usa en <a> y en <button>) */
-        .boton {
-            display: inline-block;
-            cursor: pointer;
-            background: var(--dorado);
-            color: var(--azul);
-            font: inherit;
-            font-weight: 700;
-            text-decoration: none;
-            padding: .75rem 1.5rem;
-            border: 0;
-            border-radius: var(--radio);
-            transition: background-color .2s;
-        }
-
-        .boton:hover {
-            background: var(--dorado-osc);
-            color: #fff;
-        }
-
-        /* ==========================================================
-       5. SECCIONES Y TARJETAS DE EVENTOS
-       ========================================================== */
-        .seccion {
-            padding-block: 3rem;
-        }
-
-        .seccion--suave {
-            background: var(--azul-claro);
-        }
-
-        .seccion h2 {
-            font-size: 1.75rem;
-            color: var(--azul);
-        }
-
-        /* Grid responsivo: las tarjetas se acomodan solas según el ancho */
         .eventos {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
+          grid-template-columns: 1fr;
+          gap: 1rem;
         }
 
-        .evento {
-            background: #fff;
-            border: 1px solid var(--borde);
-            border-top: 4px solid var(--azul);
-            border-radius: var(--radio);
-            padding: 1.25rem;
-            display: flex;
-            flex-direction: column;
+        .evento:last-child {
+          grid-column: auto;
         }
 
         .evento h3 {
-            font-size: 1.25rem;
-        }
-
-        .evento__datos {
-            margin-bottom: 1rem;
-            color: var(--texto-suave);
-            font-size: .9375rem;
-        }
-
-        .evento__datos dt {
-            font-weight: 700;
-            color: var(--texto);
-        }
-
-        .evento__datos dd {
-            margin: 0 0 .5rem;
-        }
-
-        .evento .boton {
-            margin-top: auto;
-            text-align: center;
-        }
-
-        /* ==========================================================
-       6. FORMULARIO
-       ========================================================== */
-        /* Título e introducción de la sección de inscripción, centrados */
-        #inscripcion .contenedor>h2,
-        #inscripcion .contenedor>p {
-            text-align: center;
-            margin-inline: auto;
+          min-height: 0;
         }
 
         .formulario {
-            background: #fff;
-            border: 1px solid var(--borde);
-            border-radius: var(--radio);
-            padding: 2rem;
-            width: 100%;
-            max-width: 36rem;
-            margin-inline: auto;
-            /* centra la tarjeta del formulario */
+          border-radius: 15px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
         }
 
-        .formulario .boton {
-            width: 100%;
+        *,
+        *::before,
+        *::after {
+          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms !important;
         }
-
-        fieldset {
-            border: 0;
-            padding: 0;
-            margin: 0 0 1.5rem;
-        }
-
-        legend {
-            font-family: var(--fuente-titulo);
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--azul);
-            padding: 0;
-            margin-bottom: .75rem;
-        }
-
-        .campo {
-            margin-bottom: 1rem;
-        }
-
-        .campo label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: .25rem;
-        }
-
-        .campo small {
-            display: block;
-            color: var(--texto-suave);
-            margin-top: .25rem;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        select {
-            width: 100%;
-            font: inherit;
-            color: inherit;
-            padding: .625rem .75rem;
-            background: #fff;
-            border: 1px solid var(--borde);
-            border-radius: var(--radio);
-        }
-
-        /* Estados de validación nativa de HTML5 (solo tras escribir algo) */
-        input:user-invalid,
-        select:user-invalid {
-            border-color: var(--error);
-        }
-
-        .casilla {
-            display: flex;
-            gap: .625rem;
-            align-items: flex-start;
-            margin-bottom: 1.25rem;
-        }
-
-        .casilla input {
-            width: 1.125rem;
-            height: 1.125rem;
-            margin-top: .25rem;
-            accent-color: var(--azul);
-        }
-
-        /* ==========================================================
-       7. PIE DE PÁGINA
-       ========================================================== */
-        .pie {
-            background: var(--azul);
-            color: #d5dcec;
-            padding-block: 2rem;
-            font-size: .9375rem;
-            text-align: center;
-        }
-
-        .pie address {
-            font-style: normal;
-        }
-
-        .pie p {
-            margin: 0 auto .25rem;
-        }
-
-        /* ==========================================================
-       8. RESPONSIVE: ajustes para pantallas pequeñas
-       ========================================================== */
-        @media (max-width: 40rem) {
-            .menu {
-                gap: 1rem;
-            }
-
-            .hero {
-                padding-block: 2rem 3rem;
-            }
-        }
-
-        /* Respeta a quienes reducen el movimiento en su sistema */
-        @media (prefers-reduced-motion: reduce) {
-            html {
-                scroll-behavior: auto;
-            }
-
-            .boton {
-                transition: none;
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <a class="saltar" href="#contenido">Saltar al contenido</a>
 
-    <!-- ENCABEZADO: marca + navegación principal -->
+    <!-- ENCABEZADO: marca y navegación principal -->
     <header class="encabezado">
-        <div class="contenedor">
-            <a class="marca" href="#inicio">PUCE · Eventos</a>
-            <nav aria-label="Navegación principal">
-                <ul class="menu">
-                    <li><a href="#eventos">Eventos</a></li>
-                    <li><a href="#inscripcion">Inscripción</a></li>
-                    <li><a href="#contacto">Contacto</a></li>
-                </ul>
-            </nav>
-        </div>
+      <div class="contenedor">
+        <a class="marca" href="#inicio" aria-label="PUCE Eventos, ir al inicio">
+          <span class="marca__sello" aria-hidden="true">PUCE</span>
+          <span>Eventos universitarios</span>
+        </a>
+
+        <nav aria-label="Navegación principal">
+          <ul class="menu">
+            <li><a href="#eventos">Eventos</a></li>
+            <li><a href="#inscripcion">Inscripción</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+          </ul>
+        </nav>
+      </div>
     </header>
 
-    <!-- CONTENIDO PRINCIPAL (un solo <main> por página) -->
+    <!-- CONTENIDO PRINCIPAL -->
     <main id="contenido">
+      <!-- PRESENTACIÓN PRINCIPAL -->
+      <section class="hero" id="inicio" aria-labelledby="titulo-hero">
+        <div class="contenedor">
+          <span class="etiqueta"
+            >Pontificia Universidad Católica del Ecuador</span
+          >
+          <h1 id="titulo-hero">Las mejores experiencias comienzan aquí</h1>
+          <p>
+            Descubre actividades, comparte ideas y forma parte de los próximos
+            eventos de nuestra comunidad universitaria.
+          </p>
+          <a class="boton" href="#eventos"
+            >Explorar eventos <span aria-hidden="true">→</span></a
+          >
 
-        <!-- Hero -->
-        <section class="hero" id="inicio" aria-labelledby="titulo-hero">
-            <div class="contenedor">
-                <h1 id="titulo-hero">Inscríbete a un evento de la PUCE en dos minutos</h1>
-                <p>Elige tu evento, completa tus datos y recibe la confirmación en tu correo institucional.</p>
-                <a class="boton" href="#inscripcion">Inscribirme ahora</a>
+          <div class="hero__nota" aria-label="Información del proceso">
+            <span>Inscripción sencilla</span>
+            <span>Proceso rápido</span>
+            <span>Eventos en campus Quito</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- LISTA DE EVENTOS -->
+      <section class="seccion" id="eventos" aria-labelledby="titulo-eventos">
+        <div class="contenedor">
+          <div class="seccion__cabecera">
+            <div>
+              <span class="etiqueta">Agenda universitaria</span>
+              <h2 class="titulo-seccion" id="titulo-eventos">
+                Próximos eventos
+              </h2>
+              <p class="texto-intro">
+                Encuentra una actividad de tu interés y reserva tu
+                participación.
+              </p>
             </div>
-        </section>
+            <a class="boton boton--secundario" href="#inscripcion"
+              >Ir a inscripción</a
+            >
+          </div>
 
-        <!-- Lista de eventos (datos de ejemplo: reemplázalos por los reales) -->
-        <section class="seccion" id="eventos" aria-labelledby="titulo-eventos">
-            <div class="contenedor">
-                <h2 id="titulo-eventos">Próximos eventos</h2>
-                <p>Todos los eventos se realizan en el campus principal, Quito.</p>
-
-                <div class="eventos">
-                    <article class="evento">
-                        <h3>Feria de Emprendimiento</h3>
-                        <dl class="evento__datos">
-                            <dt>Fecha</dt>
-                            <dd><time datetime="2026-11-18">18 de noviembre de 2026</time></dd>
-                            <dt>Hora</dt>
-                            <dd><time datetime="09:00">09:00</time></dd>
-                            <dt>Lugar</dt>
-                            <dd>Coliseo principal</dd>
-                        </dl>
-                        <a class="boton" href="#inscripcion">Inscribirme</a>
-                    </article>
-
-                    <article class="evento">
-                        <h3>Congreso de Ingeniería y Tecnología</h3>
-                        <dl class="evento__datos">
-                            <dt>Fecha</dt>
-                            <dd><time datetime="2026-11-25">25 de noviembre de 2026</time></dd>
-                            <dt>Hora</dt>
-                            <dd><time datetime="08:30">08:30</time></dd>
-                            <dt>Lugar</dt>
-                            <dd>Auditorio de Ingeniería</dd>
-                        </dl>
-                        <a class="boton" href="#inscripcion">Inscribirme</a>
-                    </article>
-
-                    <article class="evento">
-                        <h3>Jornada de Voluntariado</h3>
-                        <dl class="evento__datos">
-                            <dt>Fecha</dt>
-                            <dd><time datetime="2026-12-02">2 de diciembre de 2026</time></dd>
-                            <dt>Hora</dt>
-                            <dd><time datetime="10:00">10:00</time></dd>
-                            <dt>Lugar</dt>
-                            <dd>Plaza central</dd>
-                        </dl>
-                        <a class="boton" href="#inscripcion">Inscribirme</a>
-                    </article>
+          <div class="eventos">
+            <article class="evento">
+              <div class="evento__fecha" aria-label="18 de noviembre">
+                <span class="evento__dia">18</span>
+                <span class="evento__mes">Nov</span>
+              </div>
+              <h3>Feria de Emprendimiento</h3>
+              <dl class="evento__datos">
+                <div class="evento__dato">
+                  <span class="evento__icono" aria-hidden="true">◷</span>
+                  <div>
+                    <dt>Hora</dt>
+                    <dd><time datetime="09:00">09:00</time></dd>
+                  </div>
                 </div>
+                <div class="evento__dato">
+                  <span class="evento__icono" aria-hidden="true">⌖</span>
+                  <div>
+                    <dt>Lugar</dt>
+                    <dd>Coliseo principal</dd>
+                  </div>
+                </div>
+              </dl>
+              <a class="boton" href="#inscripcion"
+                >Inscribirme <span aria-hidden="true">→</span></a
+              >
+            </article>
+
+            <article class="evento">
+              <div class="evento__fecha" aria-label="25 de noviembre">
+                <span class="evento__dia">25</span>
+                <span class="evento__mes">Nov</span>
+              </div>
+              <h3>Congreso de Ingeniería y Tecnología</h3>
+              <dl class="evento__datos">
+                <div class="evento__dato">
+                  <span class="evento__icono" aria-hidden="true">◷</span>
+                  <div>
+                    <dt>Hora</dt>
+                    <dd><time datetime="08:30">08:30</time></dd>
+                  </div>
+                </div>
+                <div class="evento__dato">
+                  <span class="evento__icono" aria-hidden="true">⌖</span>
+                  <div>
+                    <dt>Lugar</dt>
+                    <dd>Auditorio de Ingeniería</dd>
+                  </div>
+                </div>
+              </dl>
+              <a class="boton" href="#inscripcion"
+                >Inscribirme <span aria-hidden="true">→</span></a
+              >
+            </article>
+
+            <article class="evento">
+              <div class="evento__fecha" aria-label="2 de diciembre">
+                <span class="evento__dia">02</span>
+                <span class="evento__mes">Dic</span>
+              </div>
+              <h3>Jornada de Voluntariado</h3>
+              <dl class="evento__datos">
+                <div class="evento__dato">
+                  <span class="evento__icono" aria-hidden="true">◷</span>
+                  <div>
+                    <dt>Hora</dt>
+                    <dd><time datetime="10:00">10:00</time></dd>
+                  </div>
+                </div>
+                <div class="evento__dato">
+                  <span class="evento__icono" aria-hidden="true">⌖</span>
+                  <div>
+                    <dt>Lugar</dt>
+                    <dd>Plaza central</dd>
+                  </div>
+                </div>
+              </dl>
+              <a class="boton" href="#inscripcion"
+                >Inscribirme <span aria-hidden="true">→</span></a
+              >
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- FORMULARIO DE INSCRIPCIÓN -->
+      <section
+        class="seccion seccion--suave"
+        id="inscripcion"
+        aria-labelledby="titulo-inscripcion"
+      >
+        <div class="contenedor">
+          <div class="inscripcion__cabecera">
+            <span class="etiqueta">Reserva tu lugar</span>
+            <h2 class="titulo-seccion" id="titulo-inscripcion">
+              Formulario de inscripción
+            </h2>
+            <p class="texto-intro">
+              Completa tus datos y selecciona el evento en el que deseas
+              participar. Los campos marcados con (*) son obligatorios.
+            </p>
+          </div>
+
+          <!-- Formulario visual: requiere un servicio de servidor para registrar inscripciones -->
+          <form class="formulario" action="#" method="post">
+            <div class="formulario__intro">
+              <strong>Datos del participante</strong>
+              <p>Verifica que tu información esté escrita correctamente.</p>
             </div>
-        </section>
 
-        <!-- Formulario de inscripción -->
-        <section class="seccion seccion--suave" id="inscripcion" aria-labelledby="titulo-inscripcion">
-            <div class="contenedor">
-                <h2 id="titulo-inscripcion">Formulario de inscripción</h2>
-                <p>Los campos con asterisco (*) son obligatorios.</p>
+            <fieldset>
+              <legend>1. Información personal</legend>
 
-                <!-- action="#" porque el sitio es estático: aquí conectarías tu servicio de envío -->
-                <form class="formulario" action="#" method="post">
+              <div class="campo">
+                <label for="nombre">Nombres y apellidos *</label>
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  autocomplete="name"
+                  placeholder="Ej. Juan Pérez"
+                  required
+                />
+              </div>
 
-                    <fieldset>
-                        <legend>Tus datos</legend>
+              <div class="campo">
+                <label for="cedula">Cédula de identidad *</label>
+                <input
+                  type="text"
+                  id="cedula"
+                  name="cedula"
+                  inputmode="numeric"
+                  pattern="[0-9]{10}"
+                  maxlength="10"
+                  placeholder="Ej. 1712345678"
+                  required
+                  aria-describedby="ayuda-cedula"
+                />
+                <small id="ayuda-cedula"
+                  >Ingresa los 10 dígitos, sin guiones ni espacios.</small
+                >
+              </div>
 
-                        <div class="campo">
-                            <label for="nombre">Nombres y apellidos *</label>
-                            <input type="text" id="nombre" name="nombre" autocomplete="name" required>
-                        </div>
+              <div class="campo">
+                <label for="correo">Correo electrónico *</label>
+                <input
+                  type="email"
+                  id="correo"
+                  name="correo"
+                  autocomplete="email"
+                  placeholder="nombre@ejemplo.com"
+                  required
+                />
+              </div>
 
-                        <div class="campo">
-                            <label for="cedula">Cédula de identidad *</label>
-                            <input type="text" id="cedula" name="cedula" inputmode="numeric" pattern="[0-9]{10}"
-                                maxlength="10" required aria-describedby="ayuda-cedula">
-                            <small id="ayuda-cedula">10 dígitos, sin guiones ni espacios.</small>
-                        </div>
+              <div class="campo">
+                <label for="telefono">Teléfono celular</label>
+                <input
+                  type="tel"
+                  id="telefono"
+                  name="telefono"
+                  autocomplete="tel"
+                  inputmode="tel"
+                  pattern="09[0-9]{8}"
+                  maxlength="10"
+                  placeholder="Ej. 0991234567"
+                  aria-describedby="ayuda-telefono"
+                />
+                <small id="ayuda-telefono"
+                  >Formato ecuatoriano: 10 dígitos, comenzando con 09.</small
+                >
+              </div>
 
-                        <div class="campo">
-                            <label for="correo">Correo electrónico *</label>
-                            <input type="email" id="correo" name="correo" autocomplete="email" required>
-                        </div>
+              <div class="campo">
+                <label for="facultad">Facultad *</label>
+                <select id="facultad" name="facultad" required>
+                  <option value="">Selecciona tu facultad</option>
+                  <option value="administrativas">
+                    Ciencias Administrativas y Contables
+                  </option>
+                  <option value="ingenieria">Ingeniería</option>
+                  <option value="humanas">Ciencias Humanas</option>
+                  <option value="jurisprudencia">Jurisprudencia</option>
+                  <option value="medicina">Medicina</option>
+                  <option value="otra">Otra</option>
+                </select>
+              </div>
+            </fieldset>
 
-                        <div class="campo">
-                            <label for="telefono">Teléfono celular</label>
-                            <input type="tel" id="telefono" name="telefono" autocomplete="tel" inputmode="tel"
-                                pattern="09[0-9]{8}" aria-describedby="ayuda-telefono">
-                            <small id="ayuda-telefono">Formato: 0991234567.</small>
-                        </div>
+            <fieldset>
+              <legend>2. Selección del evento</legend>
 
-                        <div class="campo">
-                            <label for="facultad">Facultad *</label>
-                            <select id="facultad" name="facultad" required>
-                                <option value="">Selecciona una opción</option>
-                                <option>Ciencias Administrativas y Contables</option>
-                                <option>Ingeniería</option>
-                                <option>Ciencias Humanas</option>
-                                <option>Jurisprudencia</option>
-                                <option>Medicina</option>
-                                <option>Otra</option>
-                            </select>
-                        </div>
-                    </fieldset>
+              <div class="campo">
+                <label for="evento">Evento al que deseas asistir *</label>
+                <select id="evento" name="evento" required>
+                  <option value="">Selecciona un evento</option>
+                  <option value="feria-emprendimiento">
+                    Feria de Emprendimiento (18 nov)
+                  </option>
+                  <option value="congreso-ingenieria">
+                    Congreso de Ingeniería y Tecnología (25 nov)
+                  </option>
+                  <option value="voluntariado">
+                    Jornada de Voluntariado (2 dic)
+                  </option>
+                </select>
+              </div>
 
-                    <fieldset>
-                        <legend>Tu evento</legend>
+              <div class="casilla">
+                <input type="checkbox" id="acepto" name="acepto" required />
+                <label for="acepto">
+                  Acepto el tratamiento de mis datos personales para gestionar
+                  esta inscripción. *
+                </label>
+              </div>
+            </fieldset>
 
-                        <div class="campo">
-                            <label for="evento">Evento *</label>
-                            <select id="evento" name="evento" required>
-                                <option value="">Selecciona un evento</option>
-                                <option>Feria de Emprendimiento (18 nov)</option>
-                                <option>Congreso de Ingeniería y Tecnología (25 nov)</option>
-                                <option>Jornada de Voluntariado (2 dic)</option>
-                            </select>
-                        </div>
-
-                        <div class="casilla">
-                            <input type="checkbox" id="acepto" name="acepto" required>
-                            <label for="acepto">Acepto el tratamiento de mis datos personales para gestionar esta
-                                inscripción. *</label>
-                        </div>
-                    </fieldset>
-
-                    <button class="boton" type="submit">Confirmar inscripción</button>
-                </form>
-            </div>
-        </section>
+            <button class="boton" type="submit">
+              Confirmar inscripción <span aria-hidden="true">→</span>
+            </button>
+            <p class="formulario__nota">
+              Revisa tus datos antes de enviar el formulario.
+            </p>
+          </form>
+        </div>
+      </section>
     </main>
 
     <!-- PIE DE PÁGINA -->
     <footer class="pie" id="contacto">
-        <div class="contenedor">
-            <address>
-                <p><strong>Pontificia Universidad Católica del Ecuador</strong></p>
-                <p>Av. 12 de Octubre 1076 y Roca, Quito, Ecuador</p>
-            </address>
-            <p><small>&copy; 2026 Proyecto académico. Sitio de práctica, no oficial.</small></p>
-        </div>
+      <div class="contenedor">
+        <p class="pie__nombre">Pontificia Universidad Católica del Ecuador</p>
+        <address>
+          <p>Av. 12 de Octubre 1076 y Roca</p>
+          <p>Quito, Ecuador</p>
+        </address>
+        <p class="pie__legal">
+          <small
+            >&copy; 2026 Proyecto académico. Sitio de práctica, no
+            oficial.</small
+          >
+        </p>
+      </div>
     </footer>
-</body>
-
+  </body>
 </html>
